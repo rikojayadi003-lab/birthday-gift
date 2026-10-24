@@ -1,0 +1,26 @@
+
+# File sistem operasi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Pengaturan editor
+.vscode/
+.idea/
+
+# File sementara dan log
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# File konfigurasi lokal
+.env
+.env.*
+!.env.example
+
+# File arsip cadangan
+*.zip
+*.rar
+*.7z

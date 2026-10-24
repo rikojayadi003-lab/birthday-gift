@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>A little gift for you</title>
+  <meta name="description" content="Sebuah hadiah ulang tahun digital.">
+  <meta name="theme-color" content="#FFF8F3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="locked">
+
+  <!-- Dekorasi latar (diisi script.js) -->
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- Kontrol musik kecil -->
+  <div class="music-ctl" id="musicCtl" hidden>
+    <button class="music-btn" id="musicBtn" type="button" aria-label="Putar atau jeda musik">🎵</button>
+    <button class="mute-btn" id="muteBtn" type="button" aria-label="Bisukan musik" aria-pressed="false">🔊</button>
+  </div>
+
+  <!-- ================= OPENING / COVER ================= -->
+  <section class="cover" id="cover" aria-label="Pembuka">
+    <div class="cover-inner">
+      <p class="cover-hint" id="openingText"></p>
+      <div class="env-wrap">
+        <button class="env" id="envelope" type="button" aria-label="Buka amplop hadiah">
+          <span class="env-back"></span>
+          <span class="env-flap"></span>
+          <span class="env-card"><span id="envCardText"></span></span>
+          <span class="env-front"></span>
+          <span class="env-seal">♥</span>
+        </button>
+      </div>
+      <button class="btn" id="openBtn" type="button"></button>
+    </div>
+  </section>
+
+  <!-- ================= CERITA (scroll storytelling) ================= -->
+  <main class="story" id="story" hidden>
+
+    <!-- 1. Greeting + countdown -->
+    <section class="chapter greeting" aria-labelledby="greetTitle">
+      <p class="tag reveal">chapter one</p>
+      <p class="date-line reveal" id="dateLine" style="--d:.1s"></p>
+      <h1 id="greetTitle" class="hb">
+        <span class="hb-small reveal" style="--d:.2s">Happy Birthday,</span>
+        <span class="hb-name reveal" data-reveal="blur" style="--d:.45s" id="greetName"></span>
+        <span class="hb-cake reveal" style="--d:.8s" aria-hidden="true">🎂</span>
+      </h1>
+      <p class="typed" id="typedSub" aria-live="polite"></p>
+      <div class="countdown reveal" id="countdown" style="--d:1s" aria-live="off"></div>
+      <a class="scroll-hint" href="#msg" aria-label="Scroll ke bawah">scroll<span>↓</span></a>
+    </section>
+
+    <!-- 2. Pesan personal -->
+    <section class="chapter message" id="msg" aria-label="Pesan untukmu">
+      <p class="tag reveal">chapter two</p>
+      <div class="lines" id="msgLines"></div>
+    </section>
+
+    <!-- 3. Foto (polaroid scattered) -->
+    <section class="chapter photos" aria-labelledby="photoTitle">
+      <p class="tag reveal">chapter three</p>
+      <h2 class="h2 reveal" id="photoTitle"></h2>
+      <p class="sub reveal" id="photoSub" style="--d:.1s"></p>
+      <div class="polaroids" id="polaroids"></div>
+      <button class="egg" id="egg" type="button" aria-label="Kejutan tersembunyi">♥</button>
+    </section>
+
+    <!-- 4. Timeline -->
+    <section class="chapter timeline" aria-labelledby="tlTitle">
+      <p class="tag reveal">chapter four</p>
+      <h2 class="h2 reveal" id="tlTitle"></h2>
+      <ol class="tl" id="tl"></ol>
+    </section>
+
+    <!-- 5. Love letter -->
+    <section class="chapter letter" id="letterSec" aria-labelledby="letterTitle">
+      <p class="tag reveal">chapter five</p>
+      <h2 class="h2 reveal" id="letterTitle"></h2>
+      <button class="l-env reveal" id="letterBtn" type="button" aria-expanded="false" aria-controls="paper" style="--d:.15s">
+        <span class="l-back"></span>
+        <span class="l-flap"></span>
+        <span class="l-front"></span>
+        <span class="l-seal">♥</span>
+      </button>
+      <p class="sub" id="letterHint"></p>
+      <div class="paper-wrap" id="paperWrap">
+        <article class="paper" id="paper" aria-label="Isi surat">
+          <div class="paper-inner" id="paperInner"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6. Cake -->
+    <section class="chapter cake" id="cakeSec" aria-labelledby="cakeTitle">
+      <p class="tag reveal">chapter six</p>
+      <h2 class="h2 reveal" id="cakeTitle"></h2>
+      <div class="cake-box reveal" style="--d:.15s">
+        <svg class="cake-svg" id="cakeSvg" viewBox="0 0 240 230" role="img" aria-label="Kue ulang tahun dengan tiga lilin">
+          <ellipse class="c-plate" cx="120" cy="206" rx="108" ry="13"/>
+          <ellipse class="c-plate2" cx="120" cy="202" rx="96" ry="10"/>
+          <rect class="c-bot" x="32" y="140" width="176" height="62" rx="14"/>
+          <path class="c-drip" d="M32 154c0-8 6-14 14-14h148c8 0 14 6 14 14v2c-8 2-10 12-18 12s-9-9-17-9-10 12-18 12-9-10-17-10-10 13-18 13-9-11-17-11-10 11-18 11-9-9-17-9-12 7-14-1z"/>
+          <rect class="c-top" x="58" y="96" width="124" height="48" rx="12"/>
+          <path class="c-drip" d="M58 108c0-7 5-12 12-12h100c7 0 12 5 12 12v2c-6 1-8 10-15 10s-8-8-15-8-8 10-15 10-8-9-15-9-9 11-15 11-8-9-15-9-5 5-7-1z"/>
+          <circle class="c-gold" cx="78" cy="170" r="3"/><circle class="c-gold" cx="108" cy="184" r="3"/>
+          <circle class="c-gold" cx="140" cy="172" r="3"/><circle class="c-gold" cx="170" cy="186" r="3"/>
+          <circle class="c-gold" cx="92" cy="128" r="2.5"/><circle class="c-gold" cx="150" cy="130" r="2.5"/>
+          <!-- Lilin -->
+          <g class="candle" tabindex="0" role="button" aria-label="Tiup lilin 1" transform="translate(94 0)">
+            <rect class="hit" x="-14" y="40" width="28" height="62"/>
+            <rect class="wax" x="-4" y="66" width="8" height="32" rx="2"/>
+            <path class="flame" d="M0 44c6 8 7 14 0 20-7-6-6-12 0-20z"/>
+          </g>
+          <g class="candle" tabindex="0" role="button" aria-label="Tiup lilin 2" transform="translate(120 0)">
+            <rect class="hit" x="-14" y="30" width="28" height="68"/>
+            <rect class="wax" x="-4" y="58" width="8" height="40" rx="2"/>
+            <path class="flame" style="animation-delay:-.4s" d="M0 36c6 8 7 14 0 20-7-6-6-12 0-20z"/>
+          </g>
+          <g class="candle" tabindex="0" role="button" aria-label="Tiup lilin 3" transform="translate(146 0)">
+            <rect class="hit" x="-14" y="40" width="28" height="62"/>
+            <rect class="wax" x="-4" y="66" width="8" height="32" rx="2"/>
+            <path class="flame" style="animation-delay:-.8s" d="M0 44c6 8 7 14 0 20-7-6-6-12 0-20z"/>
+          </g>
+        </svg>
+      </div>
+      <p class="wish" id="wishText" aria-live="polite"></p>
+      <p class="sub" id="cakeHint"></p>
+      <button class="btn" id="wishBtn" type="button"></button>
+    </section>
+
+    <!-- 7. Final -->
+    <section class="chapter final" id="finalSec" aria-labelledby="finalTitle">
+      <p class="tag reveal">the last chapter</p>
+      <figure class="arch reveal" data-reveal="scale">
+        <img id="finalImg" alt="" loading="lazy">
+      </figure>
+      <h2 class="final-title reveal" id="finalTitle" style="--d:.2s"></h2>
+      <p class="final-msg reveal" id="finalMsg" style="--d:.5s"></p>
+      <p class="sign reveal" id="sign" style="--d:.9s"></p>
+      <button class="btn ghost reveal" id="replayBtn" type="button" style="--d:1.2s"></button>
+    </section>
+  </main>
+
+  <!-- Easter egg -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+    <div class="modal-card">
+      <p class="m-heart" aria-hidden="true">♥</p>
+      <h3 id="mTitle"></h3>
+      <p id="mMsg"></p>
+      <button class="btn" id="mClose" type="button"></button>
+    </div>
+  </div>
+
+  <audio id="bgm" loop preload="auto">
+  <source src="assets/music/birthday-song.mp3" type="audio/mpeg">
+</audio>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
